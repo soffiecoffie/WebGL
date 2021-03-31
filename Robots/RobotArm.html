@@ -8,9 +8,9 @@
 	<script src="shaders.js"></script>
 	
 	<script>
-				function start( )
+		function start( )
 		{
-			var	canvas = document.getElementById("picasso");
+			var canvas = document.getElementById("picasso");
 			canvas.addEventListener('webglcontextlost',function(event){event.preventDefault();},false);
 			canvas.addEventListener('webglcontextrestored',function(){init();},false);
 
@@ -35,13 +35,13 @@
 			gl.uniform3f(uDiffuseColor,0.8,0.8,0.8);
 			gl.uniform3f(uLightDir,0,0,-1);
 
-			//Дефинирам някои цветове
+			// Някои цветове
 			red = [0.8,0,0];
 			gray = [0.7,0.7,0.7];
 			blue = [0,0,0.5];
 			yellow = [0.8,0.8,0];
 
-			//Дефинирам стойката
+			// Стойката
 			stand = new Prism([0,0,0], 2.5, 0.7, 120);
 			stand.color = [0.7,0.7,0.7];
 			cone = new Cone([0,0,0.0],2.505,0.6);
@@ -49,38 +49,38 @@
 			cyl = new Cylinder([0,0,0],0.5,2.5);
 			cyl.color = gray;;
 			
-			//паралелепипедова плоча
+			// Паралелепипедова плоча
 			cuboid = new Cuboid([0,0,0], [1.5,1.5,0.8]); 
 			cuboid.color = [0.9,0.8,0.6];
 			cuboid.rot = [0,0,0];
 
-			//големия цилиндър
+			// Големия цилиндър
 			bigCyl = new Cylinder([0,0,0], 1, 2.5);
 			bigCyl.color = gray;
 			bigCyl.rot = [0,90,0];
 
-			//плосък цилиндър
+			// Плосък цилиндър
 			flatCyl = new Cylinder([0,0,0], 1, 0.25);
 			flatCyl.color = blue;
 			flatCyl.rot = [0,90,0];
 			
-			//синя дъска
+			// Синя дъска
 			blueCub = new Cuboid([0,0,0], [0.25, 2, 3.5]); 
 			blueCub.color = blue;
 
-			//сива дъска
+			// Сива дъска
 			grayCub = new Cuboid([0,0,0], [0.25, 2, 2.96]); 
 			grayCub.color = gray;
 			grayCub.rot = [0,0,0];
 
-			//зелен цилиндър
+			// Зелен цилиндър
 			greenCyl = new Cylinder([0,0,0], 0.5, 2.5);
 			greenCyl.color = [0,0.8,0];
 
-			//малките цветни цилиндърчета
+			// Малките цветни цилиндърчета
 			smallCyl = new Cylinder([0,0,0], 0.51, 0.25);
 
-			//паралелепипед за плюса
+			// Паралелепипед за плюса
 			cross = new Cuboid([0,0,0], [0.6, 1.5, 0.8]); 
 			cross.rot = [0,0,0];
 			cross.color = yellow;
@@ -149,7 +149,7 @@
 				translate([0, 0, 0.4]);
 				greenCyl.draw();
 
-				//Рисувам цветните цилиндърчета
+				// Рисувам цветните цилиндри
 				pushMatrix();
 					translate([0, 0, greenCyl.height/2]);
 					smallCyl.color = red;
@@ -196,7 +196,7 @@
 				translate([0, 0, bigCyl.height]);
 				flatCyl.draw();
 
-				//Рисувам плюсчето
+				//Рисувам плюса
 				pushMatrix();
 					zRotate(5*alpha);
 
