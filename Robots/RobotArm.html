@@ -1,0 +1,232 @@
+	<!DOCTYPE html>
+
+<head>
+	<meta charset="utf-8"/>
+	<title>Шарнирен робот</title>
+
+	<script src="webgl-fmi.js"></script>
+	<script src="shaders.js"></script>
+	
+	<script>
+				function start( )
+		{
+			var	canvas = document.getElementById("picasso");
+			canvas.addEventListener('webglcontextlost',function(event){event.preventDefault();},false);
+			canvas.addEventListener('webglcontextrestored',function(){init();},false);
+
+			init();
+			drawFrame();
+		}
+		
+		function init()
+		{
+			gl = getContext("picasso");
+			glprog = getProgram(vShader,fShader);
+			getVariables();
+
+			gl.enable(gl.DEPTH_TEST);
+			gl.clearColor(1,1,1,1);
+
+			identity();
+			perspective(30,gl.canvas.width/gl.canvas.height,1,40000);
+			gl.uniform1i(uUseNormalMatrix,false);
+
+			gl.uniform3f(uAmbientColor,0.3,0.3,0.3);
+			gl.uniform3f(uDiffuseColor,0.8,0.8,0.8);
+			gl.uniform3f(uLightDir,0,0,-1);
+
+			//Дефинирам някои цветове
+			red = [0.8,0,0];
+			gray = [0.7,0.7,0.7];
+			blue = [0,0,0.5];
+			yellow = [0.8,0.8,0];
+
+			//Дефинирам стойката
+			stand = new Prism([0,0,0], 2.5, 0.7, 120);
+			stand.color = [0.7,0.7,0.7];
+			cone = new Cone([0,0,0.0],2.505,0.6);
+			cone.color = gray;
+			cyl = new Cylinder([0,0,0],0.5,2.5);
+			cyl.color = gray;;
+			
+			//паралелепипедова плоча
+			cuboid = new Cuboid([0,0,0], [1.5,1.5,0.8]); 
+			cuboid.color = [0.9,0.8,0.6];
+			cuboid.rot = [0,0,0];
+
+			//големия цилиндър
+			bigCyl = new Cylinder([0,0,0], 1, 2.5);
+			bigCyl.color = gray;
+			bigCyl.rot = [0,90,0];
+
+			//плосък цилиндър
+			flatCyl = new Cylinder([0,0,0], 1, 0.25);
+			flatCyl.color = blue;
+			flatCyl.rot = [0,90,0];
+			
+			//синя дъска
+			blueCub = new Cuboid([0,0,0], [0.25, 2, 3.5]); 
+			blueCub.color = blue;
+
+			//сива дъска
+			grayCub = new Cuboid([0,0,0], [0.25, 2, 2.96]); 
+			grayCub.color = gray;
+			grayCub.rot = [0,0,0];
+
+			//зелен цилиндър
+			greenCyl = new Cylinder([0,0,0], 0.5, 2.5);
+			greenCyl.color = [0,0.8,0];
+
+			//малките цветни цилиндърчета
+			smallCyl = new Cylinder([0,0,0], 0.51, 0.25);
+
+			//паралелепипед за плюса
+			cross = new Cuboid([0,0,0], [0.6, 1.5, 0.8]); 
+			cross.rot = [0,0,0];
+			cross.color = yellow;
+		}
+
+		var frame = 0;
+		var alpha = 0;
+		var alpha1 = 0;
+		var alpha2 = 0;
+		
+		var time = now();
+		var oldTime = time;
+		function now() { return (new Date()).getTime()/1000; }
+		
+		function drawFrame()
+		{
+			time = now();
+			var dTime = time-oldTime;
+			oldTime = time;
+
+			gl.clear(gl.COLOR_BUFFER_BIT+gl.DEPTH_BUFFER_BIT);			
+			lookAt([-35,0,8],[0,0,0],[0,0,1]);
+			pushMatrix();
+				translate([0, 0, -9])
+				stand.draw();
+				translate([0, 0, stand.height]);
+				cone.draw();
+				translate([0, 0, cone.height-0.2]);
+				cyl.draw();
+				translate([0, 0, cyl.height]);
+				zRotate(500*sin(alpha1/300));
+				cuboid.draw();
+
+				translate([-1.3, 0, 1]);
+				xRotate(60*sin(alpha1/70));
+				bigCyl.rot[1] = 90;
+				bigCyl.draw();
+		
+				flatCyl.rot[1] = 90;
+				flatCyl.color = blue;
+				pushMatrix();
+					translate([-0.25, 0, 0]);
+					flatCyl.draw();
+					translate([0.13, 0, 1.85]);
+					blueCub.draw();
+					translate([-0.13, 0, 1.8]);
+					flatCyl.draw();
+				popMatrix();
+		
+				pushMatrix();
+					translate([2.5, 0, 0]);
+					flatCyl.draw();
+					translate([0.13, 0, 1.85]);
+					blueCub.draw();
+					translate([-0.13, 0, 1.8]);
+					flatCyl.draw();
+				popMatrix();
+
+				translate([0, 0, 3.6]);
+				bigCyl.draw();
+
+				xRotate(60*sin(alpha1/100));
+				translate([1.3, 0, 1]);
+				cuboid.draw();
+
+				translate([0, 0, 0.4]);
+				greenCyl.draw();
+
+				//Рисувам цветните цилиндърчета
+				pushMatrix();
+					translate([0, 0, greenCyl.height/2]);
+					smallCyl.color = red;
+					smallCyl.draw();
+					translate([0, 0, smallCyl.height]);
+					smallCyl.color = gray;
+					smallCyl.draw();
+					translate([0, 0, smallCyl.height]);
+					smallCyl.color = yellow;
+					smallCyl.draw();
+				popMatrix();
+
+
+				zRotate(620*sin(alpha1/500));
+				translate([-1.3, 0, greenCyl.height+bigCyl.size/1.5]);
+				bigCyl.draw();
+
+				xRotate(60*sin(alpha2/200));
+				grayCub.rot[1] = 0;
+				pushMatrix();
+					translate([2.5, 0, 0]);
+					flatCyl.color = gray;
+					flatCyl.draw();
+					translate([0.13, 0, 1.5]);
+					grayCub.draw();
+				popMatrix();
+
+				pushMatrix();
+					translate([-0.2, 0, 0]);
+					flatCyl.draw();
+					translate([0.12, 0, 1.5]);
+					grayCub.draw();
+				popMatrix();
+				translate([1.27, 0, 3]);
+				grayCub.rot[1] = 90;
+				grayCub.draw();
+
+				translate([0, 0, 0]);
+				bigCyl.rot[1] = 0;
+				bigCyl.draw();
+
+				flatCyl.rot[1] = 0;
+				flatCyl.color = red;
+				translate([0, 0, bigCyl.height]);
+				flatCyl.draw();
+
+				//Рисувам плюсчето
+				pushMatrix();
+					zRotate(5*alpha);
+
+					cross.rot[0] = 0;
+					translate([0, 0, flatCyl.height]);
+					cross.draw();
+
+					cross.rot[0] = 90;
+					cross.draw();
+
+				popMatrix();
+			popMatrix();
+			
+			alpha -= 100*dTime;
+			alpha1 -= 50*dTime;
+			alpha2 -= 300*dTime;
+			
+			requestAnimationFrame(drawFrame);
+		}
+	</script>	
+</head>
+
+<body onload="start()">
+	<h2>Шарнирен робот</h2>
+
+	<noscript>
+		Искаме JavaScript, но няма!
+	</noscript>
+	
+	<canvas id="picasso" width="600" height="400" style="border: solid;">
+		Искаме canvas, но няма!
+	</canvas>
+</body>
