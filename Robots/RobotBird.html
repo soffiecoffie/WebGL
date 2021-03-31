@@ -54,7 +54,7 @@
 
 		function start( )
 		{
-			var	canvas = document.getElementById("picasso");
+			var canvas = document.getElementById("picasso");
 			canvas.addEventListener('webglcontextlost',function(event){event.preventDefault();},false);
 			canvas.addEventListener('webglcontextrestored',function(){init();},false);
 
@@ -79,11 +79,11 @@
 			gl.uniform3f(uDiffuseColor,0.8,0.8,0.8);
 			gl.uniform3f(uLightDir,0,0,-1);
 
-			//Дефинирам тялото на птицата
+			// Тялото на птицата
 			torso = new Cuboid([0,0,0], [2,4,2]);
 			torso.color = [0.5,0.5,0.5];
 			
-			//Дефинирам главата 
+			// Главата 
 			head = new Cuboid([0,0,0], [1, 1.5, 2]);
 			head.color = torso.color;
 			eye = new Cuboid([0,0,0], [1.01, 0.5, 0.5]);
@@ -93,13 +93,10 @@
 			beak = new Prism([0,0,0], 1.1, 0.2, 3);
 			beak.color = [1,0,0];
 
-			//Дефинирам крилете
+			// Крилете
 			wings = [];
 			for (var i=0; i<=10; i++){
 				wings.push(new Cuboid([0,0,0], [0.5, 3, 0.2]));
-				// wings[i].rot=[0,0,0];
-				// wings[i].rot[2] = 60;
-				// wings[i].rot[1] = 10;
 			}
 			wings[0].color = [0.5, 1, 0.7];		
 			wings[1].color = [0.9, 1, 0.5]; 	wings[1].size[1] = 3.2;
@@ -158,7 +155,7 @@
 					beak.draw();
 				popMatrix();
 				
-				//рисувам крилетe
+				// Рисувам крилетe
 				pushMatrix();
 					translate([1.3,0,0]);
 					xRotate(40*sin(alpha2/100));
