@@ -54,7 +54,7 @@
 
 		function start( )
 		{
-			var canvas = document.getElementById("picasso");
+			var	canvas = document.getElementById("picasso");
 			canvas.addEventListener('webglcontextlost',function(event){event.preventDefault();},false);
 			canvas.addEventListener('webglcontextrestored',function(){init();},false);
 
@@ -155,34 +155,34 @@
 					beak.draw();
 				popMatrix();
 				
-				// Рисувам крилетe
+				//рисувам крилетe
 				pushMatrix();
 					translate([1.3,0,0]);
 					xRotate(40*sin(alpha2/100));
 					yRotate(70*sin(alpha2/100));
-					zRotate(15*sin(alpha2/200));
 					wings[0].draw();
 					translate([0.5,-0.2,0]);
-					xRotate(10*sin(alpha2/70));
+					xRotate(10*sin(alpha2/100));
 					yRotate(10*sin(alpha2/100));
 					wings[1].draw();
 						translate([0.5,-0.2,0]);
-						xRotate(10*sin(alpha2/70));
+						xRotate(10*sin(alpha2/100));
 						yRotate(10*sin(alpha2/100));
 					wings[2].draw();
 						translate([0.5,-0.1,0]);
-						xRotate(10*sin(alpha2/70));
+						xRotate(10*sin(alpha2/100));
 						yRotate(10*sin(alpha2/100));
 				
 					wings[3].draw();
 						translate([0.5,-0.1,0]);
-						xRotate(10*sin(alpha2/70));
+						xRotate(10*sin(alpha2/100));
 						yRotate(10*sin(alpha2/100));
 
 					for (var i=4; i<10; i++){
 						
-						xRotate(10*sin(alpha2/70));
-						yRotate(10*sin(alpha2/100));
+						xRotate(5*sin(alpha2/100));
+						yRotate(5*sin(alpha2/100));
+						zRotate(10*sin(alpha2/100));
 						wings[i].draw()
 						
 						translate([0.5,0,0]);
@@ -193,7 +193,6 @@
 					translate([-1.3,0,0]);
 					xRotate(40*sin(alpha2/100));
 					yRotate(-70*sin(alpha2/100));
-					zRotate(-15*sin(alpha2/200));
 						wings[0].draw();
 							translate([-0.5,-0.2,0]);
 							xRotate(10*sin(alpha2/100));
@@ -205,7 +204,7 @@
 						wings[2].draw();
 							translate([-0.5,-0.1,0]);
 							xRotate(10*sin(alpha2/100));
-							yRotate(10*sin(alpha2/100));
+							yRotate(-10*sin(alpha2/100));
 						wings[3].draw();
 							translate([-0.5,-0.1,0]);
 							xRotate(10*sin(alpha2/100));
@@ -215,8 +214,9 @@
 							wings[i].draw()
 							
 							translate([-0.5,0,0]);
-							xRotate(10*sin(alpha2/100));
-							yRotate(-10*sin(alpha2/100));
+							xRotate( 5*sin(alpha2/100));
+							yRotate(-5*sin(alpha2/100));
+							zRotate(-10*sin(alpha2/100));
 						}
 						popMatrix();
 			popMatrix();
